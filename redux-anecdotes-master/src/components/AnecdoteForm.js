@@ -1,15 +1,19 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { createItem } from './reducers/anecdoteReducer';
+import { useDispatch } from 'react-redux';
+import { createItem } from '../reducers/anecdoteReducer';
+import anecdoteService from '../services/anecdotes';
 
 export default function AnecdoteForm() {
   const dispatch = useDispatch();
 
-  const create = (e) => {
+  const create = async (e) => {
     e.preventDefault();
     const item = e.target.item.value;
+    const message = 'You created';
     e.target.item.value = '';
-    dispatch(createItem(item));
+    const newAnecdote = await anecdoteService.createNew(item);
+    console.log('NEW INFO SAVED TO DB', { ...newAnecdote });
+    dispatch(createItem({ ...newAnecdote, message }));
   };
 
   return (

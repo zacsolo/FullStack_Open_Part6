@@ -22,15 +22,19 @@ const initialState = anecdotesAtStart.map(asObject);
 //------------------------------------------------------------------------
 
 //----REDUCER FOR CREATING NOTES AND VOTING-------------------------------
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
+const anecdoteReducer = (state = [], action) => {
+  const { content, votes, id, data, type } = action;
+  console.log('___STATE___', state);
+  switch (type) {
+    case 'FETCH_DATA':
+      return data;
     case 'VOTE':
       const updatedState = state.map((item) =>
-        item.id === action.payload ? { ...item, votes: item.votes + 1 } : item
+        item.id === action.id ? { ...item, votes: item.votes + 1 } : item
       );
       return updatedState;
     case 'NEW_NOTE':
-      const newState = [...state, asObject(action.payload)];
+      const newState = [...state, { content, votes, id }];
       return newState;
     default:
       break;
@@ -40,13 +44,20 @@ const reducer = (state = initialState, action) => {
 //---------------------------------------------------------------------------
 
 //------------ACTION CREATORS-----------------------------------------------
-export const addVote = (id) => {
-  return { type: 'VOTE', payload: id };
+export const addVote = (id, content, message) => {
+  return { type: 'VOTE', id, content, message };
 };
 
-export const createItem = (item) => {
-  return { type: 'NEW_NOTE', payload: item };
+export const createItem = ({ content, message, votes, id }) => {
+  return { type: 'NEW_NOTE', content, message, votes, id };
+};
+
+export const initializeData = (data) => {
+  return {
+    type: 'FETCH_DATA',
+    data,
+  };
 };
 
 //----------------------------------------------------------------------------
-export default reducer;
+export default anecdoteReducer;

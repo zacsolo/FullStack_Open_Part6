@@ -1,11 +1,8 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { hideMessage } from '../reducers/notificationReducer';
+import { useSelector } from 'react-redux';
 
 const Notification = () => {
-  const notification = useSelector(({ notification }) => notification);
-
-  const dispatch = useDispatch();
+  const notify = useSelector(({ notification }) => notification);
 
   const style = {
     border: 'solid',
@@ -13,22 +10,7 @@ const Notification = () => {
     borderWidth: 1,
   };
 
-  const displayMessage = () => {
-    const { isDisplayed, message, content } = notification;
-    if (isDisplayed) {
-      setTimeout(() => {
-        console.log('__IN SET TIMEOUT__');
-        dispatch(hideMessage());
-      }, 5000);
-      return (
-        <div style={style}>
-          {message} an anecdote "{content}"
-        </div>
-      );
-    }
-  };
-
-  return <div>{displayMessage()}</div>;
+  return <div>{notify ? <div style={style}>{notify}</div> : null}</div>;
 };
 
 export default Notification;

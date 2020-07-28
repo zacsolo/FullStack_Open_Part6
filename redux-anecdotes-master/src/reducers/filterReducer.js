@@ -1,16 +1,10 @@
-const initialState = {
-  term: '',
-};
-
-const filterReducer = (state = initialState, action) => {
-  const { term } = action;
+const filterReducer = (state = '', action) => {
   switch (action.type) {
     case 'SET_SEARCH':
-      return { ...state, term };
+      return action.term;
     default:
-      break;
+      return state;
   }
-  return state;
 };
 
 export const setSearchTerm = (term) => {

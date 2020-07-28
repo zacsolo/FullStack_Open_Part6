@@ -1,15 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { setSearchTerm } from '../reducers/filterReducer';
 
-const FilterForm = () => {
-  const dispatch = useDispatch();
-
+const FilterForm = ({ setSearchTerm }) => {
   const handleChange = (e) => {
     e.preventDefault();
     const search = e.target.value;
-    console.log(search);
-    dispatch(setSearchTerm(search));
+    setSearchTerm(search);
   };
   const style = {
     marginBottom: 10,
@@ -22,4 +19,4 @@ const FilterForm = () => {
   );
 };
 
-export default FilterForm;
+export default connect(null, { setSearchTerm })(FilterForm);

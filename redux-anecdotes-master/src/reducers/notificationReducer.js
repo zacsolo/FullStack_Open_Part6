@@ -1,34 +1,24 @@
-const initialState = {
-  content: '',
-  message: '',
-  isDisplayed: false,
-};
-
-const notificationReducer = (state = initialState, action) => {
-  const { content, message, isDisplayed } = action;
+const notificationReducer = (state = '', action) => {
   switch (action.type) {
-    case 'VOTE':
-      return {
-        content,
-        message,
-        isDisplayed: true,
-      };
-    case 'NEW_NOTE':
-      return {
-        content,
-        message,
-        isDisplayed: true,
-      };
-    case 'HIDE_MESSAGE':
-      return { ...state, isDisplayed };
+    case 'NOTIFICATION':
+      return action.content;
     default:
-      break;
+      return state;
   }
-  return state;
 };
 
-export const hideMessage = () => {
-  return { type: 'HIDE_MESSAGE', isDisplayed: false };
+let t;
+
+const timer = (seconds, dispatch) => {
+  t = setTimeout(() => {
+    dispatch({ type: 'NOTIFICATION', content: '' });
+  }, Number(`${seconds}000`));
+};
+
+export const setNotification = (content, seconds) => async (dispatch) => {
+  window.clearTimeout(t);
+  await timer(seconds, dispatch);
+  await dispatch({ type: 'NOTIFICATION', content });
 };
 
 export default notificationReducer;

@@ -1,19 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { createItem } from '../reducers/anecdoteReducer';
-import anecdoteService from '../services/anecdotes';
+import { setNotification } from '../reducers/notificationReducer';
 
-export default function AnecdoteForm() {
-  const dispatch = useDispatch();
-
+function AnecdoteForm({ createItem, setNotification }) {
   const create = async (e) => {
     e.preventDefault();
-    const item = e.target.item.value;
-    const message = 'You created';
+    const content = e.target.item.value;
     e.target.item.value = '';
-    const newAnecdote = await anecdoteService.createNew(item);
-    console.log('NEW INFO SAVED TO DB', { ...newAnecdote });
-    dispatch(createItem({ ...newAnecdote, message }));
+    createItem(content);
+    setNotification(`You created a new anecdote "${content}"`, 5);
   };
 
   return (
@@ -28,3 +24,10 @@ export default function AnecdoteForm() {
     </div>
   );
 }
+
+const mapDispatchToProps = {
+  createItem,
+  setNotification,
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);
